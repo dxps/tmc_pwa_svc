@@ -37,11 +37,14 @@ func main() {
 	app.RunWhenOnBrowser()
 
 	appHandler := &app.Handler{
-		Name:         "TMC",
-		Description:  "TM Community solution",
-		Title:        "TMC Community",
-		LoadingLabel: "",
-		Icon:         app.Icon{Default: "/web/loading.gif"},
+		Name:            "TM Community",
+		ShortName:       "TMC",
+		Description:     "TM Community solution",
+		Title:           "TMC Community",
+		LoadingLabel:    " ",
+		Icon:            app.Icon{Default: "/web/loading.png"},
+		BackgroundColor: "#ffffff",
+		ThemeColor:      "#ffffff",
 	}
 
 	s := http.Server{
