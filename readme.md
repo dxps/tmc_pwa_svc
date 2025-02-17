@@ -10,7 +10,7 @@ To just start the app, use `make dev`.
 
 To start the app in "development mode" (it gets restarted on code changes and main.css is being regenerated on detected TailwindCSS related rules), use:
 
-1. `./run_dev.sh` to run the app.<br>
+1. `./run_app.sh` to run the app.<br>
    This requires having [entr](https://eradman.com/entrproject/) installed on your system.
 2. `./run_css.sh` to run the TailwindCSS compiler.
 
