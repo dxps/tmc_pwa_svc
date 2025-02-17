@@ -7,7 +7,9 @@ type About struct {
 }
 
 func (h *About) Render() app.UI {
-	return app.Div().Body(
+	return app.Div().Class(
+		"flex flex-col min-h-screen bg-gray-100",
+	).Body(
 		app.H1().Text("About"),
 		app.A().Href("/").Text("Back to home"),
 	)

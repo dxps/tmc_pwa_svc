@@ -7,7 +7,9 @@ type Homepage struct {
 }
 
 func (h *Homepage) Render() app.UI {
-	return app.Div().Body(
+	return app.Div().Class(
+		"flex flex-col min-h-screen bg-gray-100",
+	).Body(
 		app.H1().Text("Homepage"),
 		app.A().Href("/about").Text("About"),
 	)

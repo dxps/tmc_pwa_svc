@@ -24,6 +24,7 @@ func main() {
 		Icon:            app.Icon{Default: "/web/loading.png", SVG: "/web/favicon.svg"},
 		BackgroundColor: "#ffffff",
 		ThemeColor:      "#ffffff",
+		Styles:          []string{"/web/main.css"},
 	}
 
 	s := http.Server{
