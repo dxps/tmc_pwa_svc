@@ -16,15 +16,18 @@ func main() {
 	app.RunWhenOnBrowser()
 
 	appHandler := &app.Handler{
-		Name:            "TM Community",
-		ShortName:       "TMC",
-		Description:     "TM Community solution",
-		Title:           "TMC Community",
-		LoadingLabel:    " ",
-		Icon:            app.Icon{Default: "/web/loading.png", SVG: "/web/favicon.svg"},
+		Name:         "TM Community",
+		ShortName:    "TMC",
+		Description:  "TM Community solution",
+		Title:        "TMC Community",
+		LoadingLabel: " ",
+		Icon: app.Icon{
+			Default: "/web/images/loading.png",
+			SVG:     "/web/images/favicon.svg",
+		},
 		BackgroundColor: "#ffffff",
 		ThemeColor:      "#ffffff",
-		Styles:          []string{"/web/main.css"},
+		Styles:          []string{"/web/styles/main.css"},
 	}
 
 	s := http.Server{
