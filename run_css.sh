@@ -1,5 +1,3 @@
+#!/usr/bin/env bash
 
-echo
-echo "Starting TailwindCSS compiler ..."
-
-npx tailwindcss@3.4.17 -c ./web_src/tailwind.config.js -i ./web_src/main.css -o ./web/styles/main.css --watch
+npx tailwindcss@3.4.17 -c ./styles/tailwind.config.js -i ./styles/main.css -o ./web/styles/main.css --watch

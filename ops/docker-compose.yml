@@ -1,0 +1,13 @@
+version: '3.6'
+
+services:
+    postgres_tmc:
+        image: postgres:17-alpine
+        restart: always
+        container_name: tmc-db
+        environment:
+            POSTGRES_USER: tmc
+            POSTGRES_PASSWORD: tmc
+            POSTGRES_DB: tmc
+        ports:
+            - '127.0.0.1:5457:5432'
