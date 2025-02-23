@@ -1,6 +1,9 @@
 package pages
 
 import (
+	"encoding/json"
+	"log/slog"
+
 	shttp "github.com/dxps/tmc-pwa/internal/shared/http"
 	"github.com/dxps/tmc-pwa/internal/shared/model/meta"
 	"github.com/dxps/tmc-pwa/internal/ui/comps"
@@ -61,4 +64,21 @@ func (page *AttributeDefListPage) Render() app.UI {
 			),
 		),
 	)
+}
+
+func (page *AttributeDefListPage) OnMount(ctx app.Context) {
+	page.getAttributeDefs()
+}
+
+func (page *AttributeDefListPage) getAttributeDefs() {
+	respBody, err := page.apiClient.Get("/api/definitions/attributes")
+	if err != nil {
+		slog.Error("getAttributeDefs call failed.", "error", err)
+		return
+	}
+	slog.Info("getAttributeDefs call succeeded.", "resBody", respBody)
+
+	if err := json.Unmarshal(respBody, &page.entries); err != nil {
+		slog.Error("getAttributeDefs failed to unmarshal json.", "error", err)
+	}
 }

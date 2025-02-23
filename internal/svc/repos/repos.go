@@ -10,7 +10,8 @@ import (
 )
 
 type Repos struct {
-	db *sqlx.DB
+	db               *sqlx.DB
+	AttributeDefRepo *AttributeDefRepo
 }
 
 func NewRepos(
@@ -37,7 +38,8 @@ func NewRepos(
 	db.DB.SetConnMaxIdleTime(connMaxIdleTime)
 
 	return &Repos{
-		db: db,
+		db:               db,
+		AttributeDefRepo: &AttributeDefRepo{db: db},
 	}, nil
 }
 

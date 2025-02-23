@@ -1,16 +1,21 @@
-package handlers
+package api
 
 import (
 	"encoding/json"
 	"log/slog"
 	"net/http"
-
-	"github.com/dxps/tmc-pwa/internal/shared/model"
 )
 
-func GetHealthCheck(w http.ResponseWriter, r *http.Request) {
+func (s *ApiServer) getAttributeDefs(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	data := model.Health{State: "ok"}
+
+	data, err := s.attributeDefMgmt.GetAttributeDefs()
+	if err != nil {
+		slog.Error("GetAttributeDefs failed.", "error", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	if err := json.NewEncoder(w).Encode(data); err != nil {
 		slog.Error("GetHealthCheck failed to encode response as json.", "error", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)

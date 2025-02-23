@@ -56,7 +56,7 @@ func (a *AboutPage) handleHealthcheck(ctx app.Context, e app.Event) {
 
 func (a *AboutPage) getHealthcheck() (*model.Health, error) {
 
-	respBody, err := a.apiClient.Get("/health")
+	respBody, err := a.apiClient.Get("/api/health")
 	if err != nil {
 		slog.Error("getHealthCheck call failed.", "error", err)
 		return nil, err
