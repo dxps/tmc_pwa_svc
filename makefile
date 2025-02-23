@@ -1,13 +1,13 @@
 .PHONY: build run dev
 
 build:
-	@GOARCH=wasm GOOS=js go build -C cmd/tmc-pwa -o ../../web/app.wasm
-	@go build -C cmd/tmc-pwa -o ../../tmc-pwa
+	@GOARCH=wasm GOOS=js go build -C cmd/tmc_pwa -o ../../web/app.wasm
+	@go build -C cmd/tmc_svc -o ../../tmc_svc
 
-run: build
-	@./tmc-pwa
+start_svc: build
+	@./tmc_svc
 
-stop:
-	@killall -q -HUP tmc-pwa || echo
+stop_svc:
+	@killall -q -HUP tmc_svc || echo
 
-dev: stop run
+dev: stop_svc start_svc

@@ -13,7 +13,10 @@ import (
 func StartWebUiServer(uiPort, apiPort int) *http.Server {
 
 	apiClient := shttp.NewApiClient(fmt.Sprintf("http://localhost:%d", apiPort))
+
+	// UI Routes
 	app.Route("/about", func() app.Composer { return pages.NewAbout(apiClient) })
+	app.Route("/admin", func() app.Composer { return pages.NewAdmin(apiClient) })
 	app.Route("/", func() app.Composer { return &pages.Homepage{} })
 
 	app.RunWhenOnBrowser()

@@ -21,7 +21,11 @@ func (h *Homepage) Render() app.UI {
 					Src("/web/images/logo.svg").
 					Class("w-[86px] h-[86px] logo_filter"),
 				app.H1().Text("TM Community"),
-				app.A().Href("/about").Text("About"),
+				app.Div().Class("flex gap-4").Body(
+					app.A().Href("/about").Text("About"),
+					app.Span().Text(" | "),
+					app.A().Href("/admin").Text("Admin"),
+				),
 			),
 	)
 }
