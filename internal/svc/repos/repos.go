@@ -46,6 +46,6 @@ func (r *Repos) Stop() {
 	if err := r.db.Close(); err != nil {
 		slog.Warn("Failed to close connections.", "error", err)
 	} else {
-		slog.Debug("Repos connections closed.")
+		slog.Info("Database connections closed.")
 	}
 }

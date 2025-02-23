@@ -44,9 +44,10 @@ func main() {
 	// db connection pool init //
 	/////////////////////////////
 
-	_, err := repos.NewRepos(cfg.Db.Driver, cfg.Db.DSN, 10, 1, "5m")
+	repos, err := repos.NewRepos(cfg.Db.Driver, cfg.Db.DSN, 10, 1, "5m")
 	if err != nil {
 		slog.Error("Failed to connect to database.", "error", err)
+		return
 	} else {
 		slog.Info("Database connection established.")
 	}
@@ -55,7 +56,7 @@ func main() {
 	// http servers init & startup //
 	/////////////////////////////////
 
-	apiSrv := svc.StartApiServer(cfg.Servers.BackendPort)
+	apiSrv := svc.StartApiServer(cfg.Servers.BackendPort, repos)
 	slog.Info(fmt.Sprintf("Web API Server started and it's accessible at http://localhost:%d", cfg.Servers.BackendPort))
 
 	uiSrv := ui.StartWebUiServer(cfg.Servers.FrontendPort, cfg.Servers.BackendPort)
@@ -91,5 +92,7 @@ func main() {
 	} else {
 		slog.Info("Web UI Server gracefully shutted down.")
 	}
+
+	repos.Stop()
 
 }

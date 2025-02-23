@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/dxps/tmc-pwa/internal/svc/api/handlers"
+	"github.com/dxps/tmc-pwa/internal/svc/repos"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
@@ -22,7 +23,7 @@ func (s *ApiServer) Stop(ctx context.Context) error {
 	return s.server.Shutdown(ctx)
 }
 
-func StartApiServer(port int) *ApiServer {
+func StartApiServer(port int, repos *repos.Repos) *ApiServer {
 
 	router := routerInit()
 	server := http.Server{
