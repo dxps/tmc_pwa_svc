@@ -58,7 +58,7 @@ func main() {
 	apiSrv := svc.StartApiServer(cfg.Servers.BackendPort)
 	slog.Info(fmt.Sprintf("Web API Server started and it's accessible at http://localhost:%d", cfg.Servers.BackendPort))
 
-	uiSrv := ui.StartWebUiServer(cfg.Servers.FrontendPort)
+	uiSrv := ui.StartWebUiServer(cfg.Servers.FrontendPort, cfg.Servers.BackendPort)
 	slog.Info(fmt.Sprintf("Web UI Server started and it's accessible at http://localhost:%d", cfg.Servers.FrontendPort))
 
 	///////////////////////

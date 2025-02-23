@@ -1,15 +1,29 @@
 package pages
 
 import (
+	"encoding/json"
+	"log/slog"
+
+	shttp "github.com/dxps/tmc-pwa/internal/shared/http"
+	"github.com/dxps/tmc-pwa/internal/shared/model"
 	"github.com/dxps/tmc-pwa/internal/ui/comps"
 	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
 type About struct {
 	app.Compo
+
+	apiClient *shttp.ApiClient
+	state     struct {
+		Health model.Health
+	}
 }
 
-func (h *About) Render() app.UI {
+func NewAbout(apiClient *shttp.ApiClient) *About {
+	return &About{apiClient: apiClient}
+}
+
+func (a *About) Render() app.UI {
 
 	return app.Div().Class(
 		"flex flex-col min-h-screen bg-gray-100",
@@ -20,6 +34,38 @@ func (h *About) Render() app.UI {
 			Body(
 				app.H1().Text("About"),
 				app.A().Href("/").Text("Back to home"),
+				app.Button().
+					Class("bg-gray-400 hover:bg-gray-600 text-white my-8 py-1 px-4 rounded-md").
+					Text("Healthcheck").
+					OnClick(a.handleHealthcheck),
+				app.If(a.state.Health.State != "", func() app.UI {
+					return app.Div().Text("Health state: " + a.state.Health.State)
+				}),
 			),
 	)
+}
+
+func (a *About) handleHealthcheck(ctx app.Context, e app.Event) {
+	health, err := a.getHealthcheck()
+	if err != nil {
+		a.state.Health = model.Health{State: "unknown"}
+	} else {
+		a.state.Health = *health
+	}
+}
+
+func (a *About) getHealthcheck() (*model.Health, error) {
+
+	respBody, err := a.apiClient.Get("/health")
+	if err != nil {
+		slog.Error("getHealthCheck call failed.", "error", err)
+		return nil, err
+	}
+	var health model.Health
+	if err := json.Unmarshal(respBody, &health); err != nil {
+		slog.Error("getHealthCheck failed to unmarshal json.", "error", err)
+		return nil, err
+	}
+	slog.Info("getHealthCheck call succeeded.", "responseBody", respBody)
+	return &health, nil
 }

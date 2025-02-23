@@ -5,13 +5,15 @@ import (
 	"log"
 	"net/http"
 
+	shttp "github.com/dxps/tmc-pwa/internal/shared/http"
 	"github.com/dxps/tmc-pwa/internal/ui/pages"
 	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
-func StartWebUiServer(port int) *http.Server {
+func StartWebUiServer(uiPort, apiPort int) *http.Server {
 
-	app.Route("/about", func() app.Composer { return &pages.About{} })
+	apiClient := shttp.NewApiClient(fmt.Sprintf("http://localhost:%d", apiPort))
+	app.Route("/about", func() app.Composer { return pages.NewAbout(apiClient) })
 	app.Route("/", func() app.Composer { return &pages.Homepage{} })
 
 	app.RunWhenOnBrowser()
@@ -32,7 +34,7 @@ func StartWebUiServer(port int) *http.Server {
 	}
 
 	uiSrv := http.Server{
-		Addr:    fmt.Sprintf(":%d", port),
+		Addr:    fmt.Sprintf(":%d", uiPort),
 		Handler: appHandler,
 	}
 
