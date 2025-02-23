@@ -2,23 +2,47 @@ package main
 
 import (
 	"context"
-	"log"
+	"fmt"
 	"log/slog"
-	"net/http"
+	"os"
+	"path"
+	"time"
 
+	"github.com/dxps/tmc-pwa/internal/run"
+	"github.com/dxps/tmc-pwa/internal/svc"
 	"github.com/dxps/tmc-pwa/internal/svc/repos"
-	"github.com/dxps/tmc-pwa/internal/ui/pages"
-	"github.com/maxence-charriere/go-app/v10/pkg/app"
+	"github.com/dxps/tmc-pwa/internal/ui"
+
 	"github.com/sethvargo/go-envconfig"
 )
 
 func main() {
+
+	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+		AddSource: true,
+		Level:     slog.LevelDebug,
+		ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
+			if a.Key == slog.SourceKey {
+				s := a.Value.Any().(*slog.Source)
+				s.File = path.Base(s.File)
+			}
+			return a
+		},
+	}))
+	slog.SetDefault(logger)
+
+	slog.Info("Starting up ...")
 
 	var cfg config
 	if err := envconfig.Process(context.Background(), &cfg); err != nil {
 		slog.Error("Failed to load config.", "error", err)
 		return
 	}
+	slog.Debug("Config loaded.")
+
+	/////////////////////////////
+	// db connection pool init //
+	/////////////////////////////
 
 	_, err := repos.NewRepos(cfg.Db.Driver, cfg.Db.DSN, 10, 1, "5m")
 	if err != nil {
@@ -27,33 +51,45 @@ func main() {
 		slog.Info("Database connection established.")
 	}
 
-	app.Route("/about", func() app.Composer { return &pages.About{} })
-	app.Route("/", func() app.Composer { return &pages.Homepage{} })
+	/////////////////////////////////
+	// http servers init & startup //
+	/////////////////////////////////
 
-	app.RunWhenOnBrowser()
+	apiSrv := svc.StartApiServer(cfg.Servers.BackendPort)
+	slog.Info(fmt.Sprintf("Web API Server started and it's accessible at http://localhost:%d", cfg.Servers.BackendPort))
 
-	appHandler := &app.Handler{
-		Name:         "TM Community",
-		ShortName:    "TMC",
-		Description:  "TM Community solution",
-		Title:        "TMC Community",
-		LoadingLabel: " ",
-		Icon: app.Icon{
-			Default: "/web/images/loading.png",
-			SVG:     "/web/images/favicon.svg",
-		},
-		BackgroundColor: "#ffffff",
-		ThemeColor:      "#ffffff",
-		Styles:          []string{"/web/styles/main.css"},
+	uiSrv := ui.StartWebUiServer(cfg.Servers.FrontendPort)
+	slog.Info(fmt.Sprintf("Web UI Server started and it's accessible at http://localhost:%d", cfg.Servers.FrontendPort))
+
+	///////////////////////
+	// graceful shutdown //
+	///////////////////////
+
+	shutdownCtx, shutdownCancel := context.WithCancel(context.Background())
+	defer shutdownCancel()
+
+	done := run.NewOsSignalNotifier(shutdownCtx)
+	<-done.Done()
+	slog.Info("Shutting down ...")
+
+	// Give outstanding requests a deadline for completion on both API and UI servers.
+
+	apiSrvCtx, apiSrvCancel := context.WithTimeout(shutdownCtx, 3*time.Second)
+	defer apiSrvCancel()
+
+	if err := apiSrv.Stop(apiSrvCtx); err != nil {
+		slog.Error("Failed to gracefully shutdown the Web API Server.", "error", err)
+	} else {
+		slog.Info("Web API Server gracefully shutted down.")
 	}
 
-	s := http.Server{
-		Addr:    ":8000",
-		Handler: appHandler,
+	uiSrvCtx, uiSrvCancel := context.WithTimeout(shutdownCtx, 3*time.Second)
+	defer uiSrvCancel()
+
+	if err := uiSrv.Shutdown(uiSrvCtx); err != nil {
+		slog.Error("Failed to gracefully shutdown the Web UI Server.", "error", err)
+	} else {
+		slog.Info("Web UI Server gracefully shutted down.")
 	}
 
-	log.Println("Listening on http://localhost:8000 ...")
-	if err := s.ListenAndServe(); err != nil {
-		log.Fatal(err)
-	}
 }
