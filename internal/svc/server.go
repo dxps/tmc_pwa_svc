@@ -19,7 +19,7 @@ type ApiServer struct {
 }
 
 // Gracefully shutdown the API Server.
-func (s *ApiServer) Stop(ctx context.Context) error {
+func (s *ApiServer) Shutdown(ctx context.Context) error {
 	return s.server.Shutdown(ctx)
 }
 
@@ -49,7 +49,7 @@ func routerInit() *chi.Mux {
 	cors := cors.Handler(cors.Options{
 		AllowedOrigins: []string{"*"},
 		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders: []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		AllowedHeaders: []string{"Accept", "Authorization", "Content-Type"},
 		MaxAge:         600, // Maximum value not ignored by any of the major browsers.
 	})
 	r := chi.NewRouter()

@@ -28,7 +28,7 @@ func StartWebUiServer(uiPort, apiPort int) *http.Server {
 		Name:         "TM Community",
 		ShortName:    "TMC",
 		Description:  "TM Community solution",
-		Title:        "TMC Community",
+		Title:        "TM Community",
 		LoadingLabel: " ",
 		Icon: app.Icon{
 			Default: "/web/images/loading.png",

@@ -29,7 +29,34 @@ func (a *Admin) Render() app.UI {
 					Body(
 						app.Div().Class("p-6").
 							Body(
-								app.H5().Text("Model Management"),
+								app.H3().Text("Model Management"),
+								app.P().Class("block font-sans text-base text-gray-500 leading-relaxed antialiased").
+									Text("Manage the definitions and instances of attributes and entities."),
+								app.Hr().Class("mt-2 mb-4"),
+								app.Div().Class("flex").Body(
+									app.Div().Class("pr-3 flex flex-col grow mr-1").Body(
+										app.H6().
+											Class("px-4 mb-2 pt-2 pb-1 block font-medium text-gray-500 antialiased").
+											Text("Definitions"),
+										app.A().
+											Class("py-2 px-4 rounded-lg transition duration-200").
+											Href("/definitions/entities").Text("Entities"),
+										app.A().
+											Class("py-2 px-4 rounded-lg transition duration-200").
+											Href("/definitions/attributes").Text("Attributes"),
+									),
+									app.Div().Class("pr-3 flex flex-col grow ml-1").Body(
+										app.H6().
+											Class("px-4 mb-2 pt-2 pb-1 block font-medium text-gray-500 antialiased").
+											Text("Instances"),
+										app.A().
+											Class("py-2 px-4 rounded-lg transition duration-200").
+											Href("/instances/entities").Text("Entities"),
+										app.A().
+											Class("py-2 px-4 rounded-lg transition duration-200").
+											Href("/instances/attributes").Text("Attributes"),
+									),
+								),
 							),
 					),
 			),
