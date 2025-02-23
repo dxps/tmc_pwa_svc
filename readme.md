@@ -18,9 +18,12 @@ This is version 2 of TM Community solution, written as a Progressive Web App (PW
 
 ### Start
 
-1. Start the PostgreSQL server using `cd ops && ./run_db.sh`.
-1. Start the TailwindCSS compiler using `./run_css.sh`.
-1. Start the app using `./run_app.sh`.
+1. Start the PostgreSQL server and provision the database using:
+    - `cd ops`
+    - `./run_db_server.sh`
+    - `./run_db_migrations.sh`
+2. Start the TailwindCSS compiler using `./run_css.sh`
+3. Start the app using `./run_app.sh`
 
 Besides the first step that starts the database server, the other steps are for running the app in "development mode" meaning that it gets restarted on code changes.
 
