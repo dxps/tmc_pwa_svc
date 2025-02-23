@@ -10,6 +10,7 @@ type Homepage struct {
 }
 
 func (h *Homepage) Render() app.UI {
+
 	return app.Div().Class(
 		"flex flex-col min-h-screen bg-gray-100",
 	).Body(

@@ -10,7 +10,7 @@ import (
 	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
-type About struct {
+type AboutPage struct {
 	app.Compo
 
 	apiClient *shttp.ApiClient
@@ -19,11 +19,11 @@ type About struct {
 	}
 }
 
-func NewAbout(apiClient *shttp.ApiClient) *About {
-	return &About{apiClient: apiClient}
+func NewAboutPage(apiClient *shttp.ApiClient) *AboutPage {
+	return &AboutPage{apiClient: apiClient}
 }
 
-func (a *About) Render() app.UI {
+func (a *AboutPage) Render() app.UI {
 
 	return app.Div().Class(
 		"flex flex-col min-h-screen bg-gray-100",
@@ -45,7 +45,7 @@ func (a *About) Render() app.UI {
 	)
 }
 
-func (a *About) handleHealthcheck(ctx app.Context, e app.Event) {
+func (a *AboutPage) handleHealthcheck(ctx app.Context, e app.Event) {
 	health, err := a.getHealthcheck()
 	if err != nil {
 		a.state.Health = model.Health{State: "unknown"}
@@ -54,7 +54,7 @@ func (a *About) handleHealthcheck(ctx app.Context, e app.Event) {
 	}
 }
 
-func (a *About) getHealthcheck() (*model.Health, error) {
+func (a *AboutPage) getHealthcheck() (*model.Health, error) {
 
 	respBody, err := a.apiClient.Get("/health")
 	if err != nil {

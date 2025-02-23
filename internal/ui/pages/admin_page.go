@@ -1,26 +1,21 @@
 package pages
 
 import (
-	shttp "github.com/dxps/tmc-pwa/internal/shared/http"
 	"github.com/dxps/tmc-pwa/internal/ui/comps"
 	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
-type Admin struct {
+type AdminPage struct {
 	app.Compo
-
-	apiClient *shttp.ApiClient
 }
 
-func NewAdmin(apiClient *shttp.ApiClient) *Admin {
-	return &Admin{apiClient: apiClient}
+func NewAdminPage() *AdminPage {
+	return &AdminPage{}
 }
 
-func (a *Admin) Render() app.UI {
+func (a *AdminPage) Render() app.UI {
 
-	return app.Div().Class(
-		"flex flex-col min-h-screen bg-gray-100",
-	).Body(
+	return app.Div().Class("flex flex-col min-h-screen bg-gray-100").Body(
 		&comps.Navbar{},
 		app.Div().
 			Class("flex flex-col min-h-screen justify-center items-center drop-shadow-2xl").

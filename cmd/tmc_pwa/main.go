@@ -7,7 +7,7 @@ import (
 	"path"
 
 	"github.com/dxps/tmc-pwa/internal/config"
-	"github.com/dxps/tmc-pwa/internal/ui"
+	"github.com/dxps/tmc-pwa/internal/ui/server"
 
 	"github.com/sethvargo/go-envconfig"
 )
@@ -40,5 +40,5 @@ func main() {
 	// PWA server init & startup //
 	///////////////////////////////
 
-	ui.StartWebUiServer(cfg.Servers.FrontendPort, cfg.Servers.BackendPort)
+	server.StartWebUiServer(cfg.Servers.FrontendPort, cfg.Servers.BackendPort)
 }
