@@ -13,4 +13,5 @@ func initRoutes(apiClient *shttp.ApiClient) {
 	app.Route("/about", func() app.Composer { return pages.NewAboutPage(apiClient) })
 	app.Route("/admin", func() app.Composer { return pages.NewAdminPage() })
 	app.Route("/definitions/attributes", func() app.Composer { return attr_def.NewAttributeDefListPage(apiClient) })
+	app.Route("/definitions/attributes/new", func() app.Composer { return attr_def.NewAttributeDefNewPage(apiClient) })
 }
