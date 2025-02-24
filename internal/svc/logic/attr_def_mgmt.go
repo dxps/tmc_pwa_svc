@@ -13,6 +13,11 @@ func NewAttributeDefMgmt(repo *repos.AttributeDefRepo) *AttributeDefMgmt {
 	return &AttributeDefMgmt{repo}
 }
 
-func (adm *AttributeDefMgmt) GetAttributeDefs() ([]meta.AttributeDef, error) {
-	return adm.repo.GetAll()
+func (m *AttributeDefMgmt) GetAttributeDefs() ([]*meta.AttributeDef, error) {
+	return m.repo.GetAll()
+}
+
+func (m *AttributeDefMgmt) AddAttributeDef(entry *meta.AttributeDef) error {
+	entry.Id = meta.NewId()
+	return m.repo.Add(entry)
 }

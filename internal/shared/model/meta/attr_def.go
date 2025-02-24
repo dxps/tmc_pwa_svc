@@ -11,10 +11,10 @@ const (
 )
 
 type AttributeDef struct {
-	Id           string             `json:"id"`
-	Name         string             `json:"name"`
-	Description  string             `json:"description"`
-	ValueType    AttributeValueType `json:"valueType"`
-	DefaultValue string             `json:"defaultValue"`
-	IsRequired   bool               `json:"isRequired"`
+	Id           Id                 `db:"id"              json:"id"`
+	Name         string             `db:"name"            json:"name"`
+	Description  string             `db:"description"     json:"description"`
+	ValueType    AttributeValueType `db:"value_type"      json:"valueType"`
+	DefaultValue string             `db:"default_value"   json:"defaultValue"`
+	IsRequired   bool               `db:"required"        json:"isRequired"`
 }

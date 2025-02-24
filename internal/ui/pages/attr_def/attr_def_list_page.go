@@ -1,4 +1,4 @@
-package pages
+package attr_def
 
 import (
 	"encoding/json"
@@ -51,7 +51,7 @@ func (page *AttributeDefListPage) Render() app.UI {
 												app.Td().Class("px-6 py-4 whitespace-nowrap").Body(
 													app.A().
 														Class("text-gray-500 text-3xl font-extralight hover:text-gray-800 px-2 rounded-xl transition duration-200").
-														Href("/definitions/attributes/"+entry.Id).Text("🔗"),
+														Href("/definitions/attributes/"+entry.Id.String()).Text("🔗"),
 												),
 											)
 										}),
