@@ -1,6 +1,6 @@
 .goapp-app-info {
 	/* dxps: Don't show any logo during the initial loading ... */
-	display: none;
+	/* display: none; */
 }
 .goapp-notfound-title {
 	display: flex;

@@ -4,10 +4,10 @@ usage() {
   echo 
   echo " Error: No migration version provided."
   echo " Hints: Look into ./ops/db_migrations folder and see the latest version."
-  echo "        For example, if the most recent file starts with 000003, then use ./run_migrate.sh 3"
+  echo "        For example, if the most recent file starts with 000003, then use ./run_db_migrations.sh 3"
   echo " Usage:"
-  echo "   - Migrate to a specific version using ./run_migrate.sh {version}"
-  echo "   - Force migrating (after fixing the errors) to a specific version using ./run_migrate.sh {version} force"
+  echo "   - Migrate to a specific version using ./run_db_migrations.sh {version}"
+  echo "   - Force migrating (after fixing the errors) to a specific version using ./run_db_migrations.sh {version} force"
   echo 
   exit 1
 }
