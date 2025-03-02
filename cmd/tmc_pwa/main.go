@@ -40,5 +40,5 @@ func main() {
 	// PWA server init & startup //
 	///////////////////////////////
 
-	server.StartWebUiServer(cfg.Servers.FrontendPort, cfg.Servers.BackendPort)
+	server.InitAndStartWebUiClientSide(cfg.Servers.FrontendPort, cfg.Servers.BackendPort)
 }

@@ -9,14 +9,8 @@ import (
 	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
-func StartWebUiServer(uiPort, apiPort int) *http.Server {
-
-	apiClient := shttp.NewApiClient(fmt.Sprintf("http://localhost:%d", apiPort))
-	initRoutes(apiClient)
-
-	app.RunWhenOnBrowser()
-
-	appHandler := &app.Handler{
+func newAppHandler() *app.Handler {
+	return &app.Handler{
 		Name:         "TM Community",
 		ShortName:    "TMC",
 		Description:  "TM Community solution",
@@ -30,15 +24,46 @@ func StartWebUiServer(uiPort, apiPort int) *http.Server {
 		ThemeColor:      "#ffffff",
 		Styles:          []string{"/web/styles/main.css"},
 	}
+}
+
+func InitAndStartWebUiClientSide(uiPort, apiPort int) *http.Server {
+
+	apiClient := shttp.NewApiClient(fmt.Sprintf("http://localhost:%d", apiPort))
+	initRoutes(apiClient)
+
+	app.RunWhenOnBrowser()
 
 	uiSrv := http.Server{
 		Addr:    fmt.Sprintf(":%d", uiPort),
-		Handler: appHandler,
+		Handler: newAppHandler(),
 	}
 
 	go func() {
 		if err := uiSrv.ListenAndServe(); err != http.ErrServerClosed {
-			log.Fatal(err) // TODO: get the state from this goroutine and handle it.
+			// TODO: get the startup state from this goroutine and handle it,
+			//       instead of doing the fatal exit.
+			log.Fatal(err)
+		}
+	}()
+
+	return &uiSrv
+}
+
+func InitAndStartWebUiServerSide(uiPort, apiPort int) *http.Server {
+
+	apiClient := shttp.NewApiClient(fmt.Sprintf("http://localhost:%d", apiPort))
+	initRoutes(apiClient)
+
+	app.RunWhenOnBrowser()
+
+	uiSrv := http.Server{
+		Addr:    fmt.Sprintf(":%d", uiPort),
+		Handler: newCustomHandler(),
+	}
+
+	go func() {
+		if err := uiSrv.ListenAndServe(); err != http.ErrServerClosed {
+			log.Fatal(err)
 		}
 	}()
 
