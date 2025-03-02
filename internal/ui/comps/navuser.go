@@ -15,6 +15,7 @@ const (
 
 type NavUserMenu struct {
 	app.Compo
+	inited       bool
 	token        *string
 	showDropdown bool
 }
@@ -32,7 +33,7 @@ func (n *NavUserMenu) OnMount(ctx app.Context) {
 	ctx.ObserveState(ShowDropdownState, &n.showDropdown).OnChange(func() {
 		ctx.Update()
 	})
-
+	n.inited = true
 }
 
 // isUserLoggedIn returns true if the user is logged in.
@@ -44,15 +45,17 @@ func (n *NavUserMenu) isUserLoggedIn() bool {
 func (n *NavUserMenu) Render() app.UI {
 
 	// If we don't know (yet) whether the user is logged in or not, don't show anything.
-	if n.token == nil {
-		return app.Text("")
+	if !n.inited {
+		return app.Div().Class("text-sm min-w-[31px]").Body(
+			app.Text("."),
+		)
 	}
 
-	// If user is not logged in, just show the login link.
+	// If the user is not logged in, just show the login link.
 	if !n.isUserLoggedIn() {
 		return app.A().
 			Href("/login").Text("Login").
-			Class("text-sm text-gray-600 py-2 px-4 hover:bg-gray-100 rounded-lg transition duration-200 sm:inline-block sm:ml-auto sm:mr-3")
+			Class(navbarLinkCss)
 	}
 	// Otherwise, show the user icon button.
 	return app.Div().

@@ -2,16 +2,20 @@ package comps
 
 import "github.com/maxence-charriere/go-app/v10/pkg/app"
 
+const (
+	navbarLinkCss = "text-sm text-gray-600 py-2 px-4 hover:bg-gray-100 rounded-lg transition duration-200"
+)
+
 type Navbar struct {
 	app.Compo
 }
 
 func (n *Navbar) Render() app.UI {
 	return app.Nav().
-		Class("absolute w-full px-4 py-2 flex justify-between items-center bg-white z-40").
+		Class("absolute w-full px-4 py-1 flex justify-between items-center bg-white z-40").
 		Body(
 			app.A().
-				Class("text-gray-500 hover:text-gray-500").
+				Class("text-gray-500 hover:text-gray-500 py-2").
 				Href("/").
 				Body(&Logo{}),
 			app.Ul().
@@ -19,13 +23,11 @@ func (n *Navbar) Render() app.UI {
                     transform -translate-y-1/2 -translate-x-1/2
                     sm:flex sm:mx-auto sm:flex sm:items-center sm:w-auto sm:space-x-3 lg:space-x-6`).Body(
 				app.Li().Body(
-					app.A().Href("/").Text("Home").
-						Class("text-sm text-gray-600 py-2 px-4 hover:bg-gray-100 rounded-lg transition duration-200"),
+					app.A().Href("/").Text("Home").Class(navbarLinkCss),
 				),
 				&NavSep{},
 				app.Li().Body(
-					app.A().Href("/data-mgmt").Text("Data Management").
-						Class("text-sm text-gray-600 py-2 px-4 hover:bg-gray-100 rounded-lg transition duration-200"),
+					app.A().Href("/data-mgmt").Text("Data Management").Class(navbarLinkCss),
 				),
 			),
 			&NavUserMenu{},
