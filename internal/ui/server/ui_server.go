@@ -17,7 +17,7 @@ func newAppHandler() *app.Handler {
 		Title:        "TM Community",
 		LoadingLabel: " ",
 		Icon: app.Icon{
-			Default: "/web/images/loading.png",
+			Default: "/web/images/favicon.svg",
 			SVG:     "/web/images/favicon.svg",
 		},
 		BackgroundColor: "#ffffff",

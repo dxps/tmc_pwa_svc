@@ -1,13 +1,17 @@
 package comps
 
-import "github.com/maxence-charriere/go-app/v10/pkg/app"
+import (
+	_ "embed"
+
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
+)
 
 type Logo struct {
 	app.Compo
 }
 
 func (l *Logo) Render() app.UI {
-	return app.Div().Body(
-		app.Img().Src("/web/images/logo.png").Alt("logo").Class("h-8"),
+	return app.Div().Class("w-[24px] h-[20px]").Body(
+		app.Raw(LOGO_ICON),
 	)
 }

@@ -6,7 +6,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/dxps/tmc-pwa/internal/config"
+	"github.com/dxps/tmc-pwa/internal/shared/config"
 	"github.com/dxps/tmc-pwa/internal/ui/server"
 
 	"github.com/sethvargo/go-envconfig"

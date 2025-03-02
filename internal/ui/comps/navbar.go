@@ -11,11 +11,9 @@ func (n *Navbar) Render() app.UI {
 		Class("absolute w-full px-4 py-2 flex justify-between items-center bg-white z-40").
 		Body(
 			app.A().
-				Class("text-3xl font-bold leading-none hover:bg-white").
+				Class("text-gray-500 hover:text-gray-500").
 				Href("/").
-				Body(
-					&Logo{},
-				),
+				Body(&Logo{}),
 			app.Ul().
 				Class(`hidden absolute top-1/2 sm:left-1/3 sm:pl-16 md:left-1/2 lg:left-1/2
                     transform -translate-y-1/2 -translate-x-1/2
