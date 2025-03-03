@@ -1,5 +1,5 @@
 ## Project's build artifacts.
-tmc_svc
+/tmc_svc
 web/app.wasm
 web/styles/main.css
 
