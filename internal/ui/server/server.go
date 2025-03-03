@@ -26,6 +26,7 @@ func newAppHandler() *app.Handler {
 	}
 }
 
+// InitAndStartWebUiClientSide sets up the UI in the "client-side" (the PW:A that lives in the browser).
 func InitAndStartWebUiClientSide(uiPort, apiPort int) *http.Server {
 
 	apiClient := shttp.NewApiClient(fmt.Sprintf("http://localhost:%d", apiPort))
@@ -49,6 +50,7 @@ func InitAndStartWebUiClientSide(uiPort, apiPort int) *http.Server {
 	return &uiSrv
 }
 
+// InitAndStartWebUiServerSide sets up the UI in the "server-side" (for server-side rendering of the UI).
 func InitAndStartWebUiServerSide(uiPort, apiPort int) *http.Server {
 
 	apiClient := shttp.NewApiClient(fmt.Sprintf("http://localhost:%d", apiPort))

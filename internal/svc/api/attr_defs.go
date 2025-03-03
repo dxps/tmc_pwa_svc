@@ -7,6 +7,7 @@ import (
 )
 
 func (s *ApiServer) getAttributeDefs(w http.ResponseWriter, _ *http.Request) {
+
 	w.Header().Set("Content-Type", "application/json")
 
 	data, err := s.attributeDefMgmt.GetAttributeDefs()

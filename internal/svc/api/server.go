@@ -14,6 +14,7 @@ import (
 )
 
 type ApiServer struct {
+	router           *chi.Mux
 	server           *http.Server
 	Port             int
 	attributeDefMgmt *logic.AttributeDefMgmt
@@ -25,12 +26,11 @@ func NewApiServer(port int, repos *repos.Repos) *ApiServer {
 		Port:             port,
 		attributeDefMgmt: logic.NewAttributeDefMgmt(repos.AttributeDefRepo),
 	}
-	router := routerInit(&apiSrv)
-	server := http.Server{
+	apiSrv.initRouter()
+	apiSrv.server = &http.Server{
 		Addr:    fmt.Sprintf(":%d", port),
-		Handler: router,
+		Handler: apiSrv.router,
 	}
-	apiSrv.server = &server
 
 	return &apiSrv
 }
@@ -48,23 +48,19 @@ func (s *ApiServer) Start() {
 	}()
 }
 
-func routerInit(s *ApiServer) *chi.Mux {
+func (s *ApiServer) initRouter() {
 
 	cors := cors.Handler(cors.Options{
-		AllowedOrigins: []string{"*"},
-		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders: []string{"Accept", "Authorization", "Content-Type"},
-		MaxAge:         600, // Maximum value not ignored by any of the major browsers.
+		AllowedOrigins: []string{"*"},                                       //
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}, //
+		AllowedHeaders: []string{"Accept", "Authorization", "Content-Type"}, //
+		MaxAge:         600,                                                 // Maximum value not ignored by any of the major browsers.
 	})
-	r := chi.NewRouter()
+	s.router = chi.NewRouter()
 
-	// Middlewares
-	r.Use(cors)
-	r.Use(middleware.Logger)
+	// Middlewares setup.
+	s.router.Use(cors)
+	s.router.Use(middleware.Logger)
 
-	// Routes
-	r.Get("/api/health", getHealthCheck)
-	r.Get("/api/definitions/attributes", s.getAttributeDefs)
-
-	return r
+	s.initRoutes()
 }

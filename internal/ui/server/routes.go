@@ -7,6 +7,7 @@ import (
 	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
+// initRoutes registers the UI routes.
 func initRoutes(apiClient *shttp.ApiClient) {
 
 	app.Route("/", func() app.Composer { return &pages.Homepage{} })

@@ -43,11 +43,9 @@ func NewRepos(
 	}, nil
 }
 
-// Stop closes the database connections.
-func (r *Repos) Stop() {
+// Close closes the database connections.
+func (r *Repos) Close() {
 	if err := r.db.Close(); err != nil {
 		slog.Warn("Failed to close connections.", "error", err)
-	} else {
-		slog.Info("Database connections closed.")
 	}
 }

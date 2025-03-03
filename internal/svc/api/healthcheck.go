@@ -8,7 +8,7 @@ import (
 	"github.com/dxps/tmc-pwa/internal/shared/model"
 )
 
-func getHealthCheck(w http.ResponseWriter, r *http.Request) {
+func (s *ApiServer) getHealthCheck(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	data := model.Health{State: "ok"}
 	if err := json.NewEncoder(w).Encode(data); err != nil {
